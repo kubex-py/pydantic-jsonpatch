@@ -11,9 +11,9 @@ authors = [
 maintainers = [
     {name = "Codemageddon", email = "dev@codemageddon.me"},
 ]
-requires-python = ">=3.10"
 dependencies = [
     "pydantic>=2.0,<3",
+    "pydantic-jsonpointer",
 ]
 classifiers = [
   "Development Status :: 4 - Beta",
@@ -44,3 +44,11 @@ path = "src/pydantic_jsonpatch/__version__.py"
 
 [tool.mypy]
 strict = true
+
+[tool.uv.sources]
+pydantic-jsonpointer = { path = "../pydantic-jsonpointer", editable = true }
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.3",
+]
