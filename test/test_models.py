@@ -5,19 +5,18 @@ from typing import Any
 
 import pytest
 from pydantic import TypeAdapter, ValidationError
-
 from pydantic_jsonpointer import JsonPointer
+
 from pydantic_jsonpatch.models import (
     JsonPatch,
     JsonPatchAdd,
     JsonPatchCopy,
-    JsonPatchMove,
     JsonPatchItem,
+    JsonPatchMove,
     JsonPatchRemove,
     JsonPatchReplace,
     JsonPatchTest,
 )
-
 
 _OP_CONSTRUCTION_CASES: list[tuple[type[Any], dict[str, Any], dict[str, Any]]] = [
     (
@@ -353,4 +352,3 @@ def test_json_patch_round_trip() -> None:
     serialized = original.serialize()
     restored = JsonPatch.model_validate_json(serialized)
     assert json.loads(restored.serialize()) == json.loads(serialized)
-

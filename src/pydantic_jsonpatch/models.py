@@ -6,6 +6,7 @@ from typing import Annotated, Any, Literal, Union
 from pydantic import BaseModel, ConfigDict, Field, RootModel, model_validator
 from pydantic_jsonpointer import JsonPointer
 
+
 class Operation(str, Enum):
     ADD = "add"
     REMOVE = "remove"
@@ -88,21 +89,21 @@ class JsonPatch(RootModel[list[JsonPatchItem]]):
     root: list[JsonPatchItem] = []
 
     def add(self, path: str, value: Any) -> JsonPatch:
-        self.root.append(JsonPatchAdd(path=JsonPointer(path), value=value))
+        self.root.append(JsonPatchAdd(path=path, value=value))
         return self
 
     def remove(self, path: str) -> JsonPatch:
-        self.root.append(JsonPatchRemove(path=JsonPointer(path)))
+        self.root.append(JsonPatchRemove(path=path))
         return self
 
     def replace(self, path: str, value: Any) -> JsonPatch:
-        self.root.append(JsonPatchReplace(path=JsonPointer(path), value=value))
+        self.root.append(JsonPatchReplace(path=path, value=value))
 
         return self
 
     def move(self, path: str, *, from_: str) -> JsonPatch:
         self.root.append(
-            JsonPatchMove(path=JsonPointer(path), from_=JsonPointer(from_))  # ty: ignore[missing-argument, unknown-argument]
+            JsonPatchMove(path=path, from_=from_)  # ty: ignore[missing-argument, unknown-argument]
         )
         return self
 
@@ -110,12 +111,12 @@ class JsonPatch(RootModel[list[JsonPatchItem]]):
         self, path: str, *, from_: str
     ) -> JsonPatch:
         self.root.append(
-            JsonPatchCopy(path=JsonPointer(path), from_=JsonPointer(from_))  # ty: ignore[missing-argument, unknown-argument]
+            JsonPatchCopy(path=path, from_=from_)  # ty: ignore[missing-argument, unknown-argument]
         )
         return self
 
     def test(self, path: str, value: Any) -> JsonPatch:
-        self.root.append(JsonPatchTest(path=JsonPointer(path), value=value))
+        self.root.append(JsonPatchTest(path=path, value=value))
         return self
 
     def serialize(self) -> str:
