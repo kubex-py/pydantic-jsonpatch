@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import Annotated, Any, ClassVar, Literal, Union
+from typing import Annotated, Any, Literal, Union
 
 from pydantic import BaseModel, ConfigDict, Field, RootModel, model_validator
 from pydantic_jsonpointer import JsonPointer
@@ -64,7 +64,7 @@ class JsonPatchTest(BaseModel):
     value: Any
 
 
-JsonPatchOperation = Annotated[
+JsonPatchItem = Annotated[
     Union[
         JsonPatchAdd,
         JsonPatchRemove,
@@ -77,7 +77,7 @@ JsonPatchOperation = Annotated[
 ]
 
 
-class JsonPatch(RootModel[list[JsonPatchOperation]]):
+class JsonPatch(RootModel[list[JsonPatchItem]]):
     """RFC 6902 JSON Patch document.
 
     Can be constructed directly or built incrementally via chaining::
@@ -85,24 +85,24 @@ class JsonPatch(RootModel[list[JsonPatchOperation]]):
         patch = JsonPatch().add("/a", 1).remove("/b").replace("/c", "new")
     """
 
-    root: list[JsonPatchOperation] = []
+    root: list[JsonPatchItem] = []
 
     def add(self, path: str, value: Any) -> JsonPatch:
-        self.root.append(JsonPatchAdd(path=path, value=value))  # ty: ignore[invalid-argument-type]
+        self.root.append(JsonPatchAdd(path=JsonPointer(path), value=value))
         return self
 
     def remove(self, path: str) -> JsonPatch:
-        self.root.append(JsonPatchRemove(path=path))  # ty: ignore[invalid-argument-type]
+        self.root.append(JsonPatchRemove(path=JsonPointer(path)))
         return self
 
     def replace(self, path: str, value: Any) -> JsonPatch:
-        self.root.append(JsonPatchReplace(path=path, value=value))  # ty: ignore[invalid-argument-type]
+        self.root.append(JsonPatchReplace(path=JsonPointer(path), value=value))
 
         return self
 
     def move(self, path: str, *, from_: str) -> JsonPatch:
         self.root.append(
-            JsonPatchMove(path=path, from_=from_)  # ty: ignore[invalid-argument-type,missing-argument, unknown-argument]
+            JsonPatchMove(path=JsonPointer(path), from_=JsonPointer(from_))  # ty: ignore[missing-argument, unknown-argument]
         )
         return self
 
@@ -110,12 +110,12 @@ class JsonPatch(RootModel[list[JsonPatchOperation]]):
         self, path: str, *, from_: str
     ) -> JsonPatch:
         self.root.append(
-            JsonPatchCopy(path=path, from_=from_)  # ty: ignore[invalid-argument-type, missing-argument, unknown-argument]
+            JsonPatchCopy(path=JsonPointer(path), from_=JsonPointer(from_))  # ty: ignore[missing-argument, unknown-argument]
         )
         return self
 
     def test(self, path: str, value: Any) -> JsonPatch:
-        self.root.append(JsonPatchTest(path=path, value=value))  # ty: ignore[invalid-argument-type]
+        self.root.append(JsonPatchTest(path=JsonPointer(path), value=value))
         return self
 
     def serialize(self) -> str:

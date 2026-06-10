@@ -12,7 +12,7 @@ from pydantic_jsonpatch.models import (
     JsonPatchAdd,
     JsonPatchCopy,
     JsonPatchMove,
-    JsonPatchOperation,
+    JsonPatchItem,
     JsonPatchRemove,
     JsonPatchReplace,
     JsonPatchTest,
@@ -77,7 +77,7 @@ def test_json_patch_move_from_alias_in_json() -> None:
     assert raw["from"] == "/c/d"
 
 
-_adapter: TypeAdapter[JsonPatchOperation] = TypeAdapter(JsonPatchOperation)
+_adapter: TypeAdapter[JsonPatchItem] = TypeAdapter(JsonPatchItem)
 
 _DISPATCH_CASES: list[tuple[dict[str, Any], type[Any]]] = [
     ({"op": "add", "path": "/x", "value": 1}, JsonPatchAdd),

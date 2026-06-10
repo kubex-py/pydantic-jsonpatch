@@ -44,11 +44,17 @@ path = "src/pydantic_jsonpatch/__version__.py"
 
 [tool.mypy]
 strict = true
+plugins = [
+    "pydantic.mypy"
+]
 
 [tool.uv.sources]
 pydantic-jsonpointer = { path = "../pydantic-jsonpointer", editable = true }
 
 [dependency-groups]
 dev = [
+    "mypy>=2,<3",
     "pytest>=9.0.3",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.15.13",
 ]
