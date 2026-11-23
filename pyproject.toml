@@ -11,9 +11,9 @@ authors = [
 maintainers = [
     {name = "Codemageddon", email = "dev@codemageddon.me"},
 ]
-requires-python = ">=3.10"
 dependencies = [
     "pydantic>=2.0,<3",
+    "pydantic-jsonpointer",
 ]
 classifiers = [
   "Development Status :: 4 - Beta",
@@ -30,9 +30,9 @@ classifiers = [
 
 [project.urls]
 Homepage = "https://pydantic-jsonpatch.codemageddon.me/"
-Repository = "https://github.com/codemageddon/kubex.git"
-Issues = "https://github.com/codemageddon/kubex/issues"
-Changelog = "https://github.com/codemageddon/kubex/blob/main/CHANGELOG.md"
+Repository = "https://github.com/kubex-py/pydantic-jsonpatch.git"
+Issues = "https://github.com/kubex-py/pydantic-jsonpatch/issues"
+Changelog = "https://github.com/kubex-py/pydantic-jsonpatch/blob/main/CHANGELOG.md"
 Documentation = "https://pydantic-jsonpatch.codemageddon.me/"
 
 [build-system]
@@ -44,3 +44,17 @@ path = "src/pydantic_jsonpatch/__version__.py"
 
 [tool.mypy]
 strict = true
+plugins = [
+    "pydantic.mypy"
+]
+
+[tool.uv.sources]
+pydantic-jsonpointer = { path = "../pydantic-jsonpointer", editable = true }
+
+[dependency-groups]
+dev = [
+    "mypy>=2,<3",
+    "pytest>=9.0.3",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.15.13",
+]
