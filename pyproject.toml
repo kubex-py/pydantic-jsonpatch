@@ -30,9 +30,9 @@ classifiers = [
 
 [project.urls]
 Homepage = "https://pydantic-jsonpatch.codemageddon.me/"
-Repository = "https://github.com/codemageddon/kubex.git"
-Issues = "https://github.com/codemageddon/kubex/issues"
-Changelog = "https://github.com/codemageddon/kubex/blob/main/CHANGELOG.md"
+Repository = "https://github.com/kubex-py/pydantic-jsonpatch.git"
+Issues = "https://github.com/kubex-py/pydantic-jsonpatch/issues"
+Changelog = "https://github.com/kubex-py/pydantic-jsonpatch/blob/main/CHANGELOG.md"
 Documentation = "https://pydantic-jsonpatch.codemageddon.me/"
 
 [build-system]
